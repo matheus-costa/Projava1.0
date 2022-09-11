@@ -1,0 +1,5 @@
+CREATE TABLE produtos(
+codprod INTEGER PRIMARY KEY,
+nomeprod VARCHAR(30),
+qntdprod INTEGER	
+);
