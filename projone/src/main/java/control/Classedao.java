@@ -1,0 +1,92 @@
+package control;
+
+
+	
+	import java.sql.Connection;
+	import java.sql.PreparedStatement;
+	import java.sql.SQLException;
+	import model.Produtos;
+	
+		// executa todas ás ações no banco
+		
+	public class Classedao {	
+		private Connection connection;
+
+		public void  salvar(Produtos produtos) {
+			
+			connection = null;
+			try {
+				String sql ="INSERT INTO produtos(codprod,nomeprod,qntdprod) VALUES(?,?,?)";
+				
+				PreparedStatement statement = connection.prepareStatement(sql);
+				
+			
+				statement.setInt(1, produtos.getCodprod());
+				statement.setString(2,produtos.getNomeprod());
+				statement.setInt(3, produtos.getQntdprod());
+				
+
+				statement.execute();
+				connection.commit();// Executa no banco
+
+			} catch (Exception e) {
+				try {
+					connection.rollback();// Reverte a operação
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+			
+		
+		}
+		
+		public void deletar(Produtos produtos) throws SQLException {
+
+			
+			try {
+				String sql = "DELETE FROM produto WHERE Codprod =? ";
+
+				PreparedStatement statement = connection.prepareStatement(sql);
+				
+				statement.setInt(1, produtos.getCodprod());
+				statement.setString(2,produtos.getNomeprod());
+				statement.setInt(3, produtos.getQntdprod());
+				
+				statement.execute();
+				connection.commit();
+				// connection.close();
+			
+			} catch (Exception e) {
+				try {
+					connection.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+		}
+		public void atualizar(Produtos produtos) {
+
+			try {
+				String sql = "UPDATE pro SET codprod = ?, nomeprod=?, qntd=? " + produtos.getCodprod();
+				PreparedStatement statement = connection.prepareStatement(sql);
+
+				statement.setInt(1, produtos.getCodprod());
+				statement.setString(2,produtos.getNomeprod());
+				statement.setInt(3, produtos.getQntdprod());
+				
+				statement.execute();
+				connection.commit();
+				
+			} catch (SQLException e) {
+				try {
+					connection.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+		}
+				
+}
